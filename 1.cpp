@@ -4,7 +4,8 @@
 #include <string>
 
 using namespace std;
-
+extern const size_t SCREEN_WIDTH = 80;
+extern const size_t MAX_ASTERISK = SCREEN_WIDTH - 3 - 1;
 
 vector<double> input_numbers(size_t count)
 {
@@ -79,8 +80,6 @@ void show_histogram_text(vector<size_t>bins)
         }
     }
     double height;
-    const size_t SCREEN_WIDTH = 80;
-    const size_t MAX_ASTERISK = SCREEN_WIDTH - 3 - 1;
     if (max_count > MAX_ASTERISK)
     {
         height = (static_cast<double>(MAX_ASTERISK) / max_count);;
@@ -151,9 +150,32 @@ void show_histogram_svg(const vector<size_t>& bins)
     const auto BLOCK_WIDTH = 10;
     svg_begin(IMAGE_WIDTH, IMAGE_HEIGHT);
     double top = 0;
+    double scaling_factor,k;
+    size_t bin_count = bins.size();
+    size_t max_count = 0;
+    const auto MAX_WIDTH = IMAGE_WIDTH - TEXT_WIDTH;
+    for (size_t i = 0; i < bin_count; i++)
+    {
+        k = bins[i] * BLOCK_WIDTH;
+        if (k > MAX_WIDTH)
+        {
+            max_count = k;
+        }
+    }
+    for (size_t i = 0; i < bin_count; i++)
+    {        
+        if (max_count > MAX_WIDTH)
+        {
+            scaling_factor = (static_cast<double>(MAX_WIDTH) / max_count);
+        }
+        else
+        {
+            scaling_factor = 1;
+        }
+    }
     for (size_t bin : bins)
     {
-        const double bin_width = BLOCK_WIDTH * bin;
+        const double bin_width = BLOCK_WIDTH * bin * scaling_factor;
         svg_text(TEXT_LEFT, top + TEXT_BASELINE, to_string(bin));
         svg_rect(TEXT_WIDTH, top, bin_width, BIN_HEIGHT, "blue", "#ffeeee");
         top += BIN_HEIGHT;
