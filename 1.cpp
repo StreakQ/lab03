@@ -134,10 +134,10 @@ svg_text(double left, double baseline, string text)
 
     cout << "<text x='" << left << "' y='" << baseline << "'>" << text << "</text>";
 }
-void svg_rect(double x, double y, double width, double height, string stroke, string fill)
+void svg_rect(double x, double y, double width, double height, string stroke = "black", string fill = "black")
 {
     cout << "<rect x='" << x << "' y='" << y << "' width='" << width << "' height='" << height
-        << "' stroke='" << stroke << "' fill='" << fill << "'/>";                                 //ПРАВИЛЬНЫЙ КОНЕЦ "'>"
+        << "' stroke='" << stroke << "' fill='" << fill << "'/>";                                 //ПРАВИЛЬНЫЙ КОНЕЦ "'/>"
 }
 
 void show_histogram_svg(const vector<size_t>& bins)
