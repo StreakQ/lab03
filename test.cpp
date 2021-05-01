@@ -45,12 +45,23 @@ void empty_arr()
     vector<double> array(5);
     array[0]= {};
     double min = 0;
+    double new_min = min;
     double max = 0;
     find_minmax( array,min, max);
-    assert(min != 0 );
+    assert(new_min !=min  );
     return;
 }
-
+void max_min()
+{
+    double max=1;
+    double min = max;
+    assert(max=min);
+}
+void bin_count_0()
+{
+    double bin_count=0;
+    assert(bin_count == 0);
+}
 int
 main()
 {
@@ -58,6 +69,8 @@ main()
     test_negative();
     test_equal();
     test_one_number();
-   // empty_arr();
+    //empty_arr();
+    max_min();
+    bin_count_0();
     return 0;
 }
