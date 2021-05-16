@@ -169,7 +169,7 @@ void show_histogram_svg( const vector<double>& bins,double val_sign)
     {
         if (max_count > MAX_WIDTH)
         {
-            scaling_factor = MAX_WIDTH / max_count;
+            scaling_factor =  (static_cast<double>(MAX_WIDTH) / max_count);
         }
         else
         {
