@@ -5,8 +5,7 @@ void find_minmax(const vector<double>& numbers, double& min, double& max)
 {
     min = numbers[0];
     max = numbers[0];
-if(numbers.size()!= 0)
-{
+
     for (size_t i = 0; i < numbers.size(); i++)
     {
         if (numbers[i] < min)
@@ -18,7 +17,7 @@ if(numbers.size()!= 0)
             max = numbers[i];
         }
     }
-}
+
     return;
 }
 vector<double> input_numbers(size_t count)
@@ -170,7 +169,7 @@ void show_histogram_svg( const vector<double>& bins,double val_sign)
     {
         if (max_count > MAX_WIDTH)
         {
-            scaling_factor = (static_cast<double>(MAX_WIDTH) / max_count);
+            scaling_factor = MAX_WIDTH / max_count;
         }
         else
         {
@@ -189,7 +188,7 @@ void show_histogram_svg( const vector<double>& bins,double val_sign)
         svg_rect(TEXT_WIDTH, top+ top_sign, bin_width, BIN_HEIGHT, "blue", "#ffeeee");
         if (i < bin_count - 1)
         {
-            svg_text(0, 1.75* BIN_HEIGHT+ 1.75*top_sign, str);
+            svg_text(0, top + TEXT_BASELINE + top_sign + BIN_HEIGHT, str);
             i++;
         }
         top += BIN_HEIGHT;
