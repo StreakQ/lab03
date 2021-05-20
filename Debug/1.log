@@ -1,11 +1,8 @@
-﻿  1.cpp
-  histogram.cpp
-C:\Users\Евгений\source\repos\1\histogram.cpp(162,21): warning C4244: =: преобразование "_Ty" в "size_t", возможна потеря данных
+﻿  histogram.cpp
+C:\Users\Евгений\source\repos\1\histogram.cpp(176,21): warning C4244: =: преобразование "_Ty" в "size_t", возможна потеря данных
           with
           [
               _Ty=double
           ]
-C:\Users\Евгений\source\repos\1\histogram.cpp(182,27): warning C4244: инициализация: преобразование "const double" в "size_t", возможна потеря данных
-C:\Users\Евгений\source\repos\1\histogram.cpp(189,15): warning C4018: <: несоответствие типов со знаком и без знака
-  Создание кода...
+C:\Users\Евгений\source\repos\1\histogram.cpp(194,27): warning C4244: инициализация: преобразование "const double" в "size_t", возможна потеря данных
   1.vcxproj -> C:\Users\Евгений\source\repos\1\Debug\1.exe

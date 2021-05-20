@@ -1,6 +1,8 @@
 
 #include "histogram.h"
 
+
+
 void find_minmax(const vector<double>& numbers, double& min, double& max)
 {
     min = numbers[0];
@@ -29,6 +31,28 @@ vector<double> input_numbers(istream& in, size_t count)
     }
     return result;
 }
+struct Input
+{
+    vector<double> numbers;
+    size_t bin_count;
+};
+Input read_input(istream& in)
+{
+    Input data;
+
+    cerr << "Enter number count: ";
+    size_t number_count;
+    in >> number_count;
+
+    cerr << "Enter numbers: ";
+    data.numbers = input_numbers(in, number_count);
+    cerr << "Enter bin count ";
+    in >> data.bin_count;
+
+
+    return data;
+}
+
 vector<double> make_histogram(const vector<double>& numbers, size_t bin_count)
 {
     double min, max;
@@ -132,23 +156,13 @@ void svg_rect(double x, double y, double width, double height, string stroke , s
         << "' stroke='" << stroke << "' fill='" << fill << "'/>";                                 
 }
 
-double fun_sign(const vector<double> numbers,size_t bin_count )
-{
-    double max, min;
-    find_minmax(numbers, min, max);
-    double bin_size = (max - min) / bin_count;
-    bin_size = round(bin_size * 100) / 100;
-    double val_sign=0;
-    val_sign = val_sign + bin_size;
-    return val_sign;
-}
-void show_histogram_svg( const vector<double>& bins,double val_sign)
+void show_histogram_svg( const vector<double>& bins)
 {
     const auto IMAGE_WIDTH = 400;
     const auto IMAGE_HEIGHT = 300;
     const auto TEXT_LEFT = 20;
     const auto TEXT_BASELINE = 20;
-    const auto TEXT_WIDTH = 70;
+    const auto TEXT_WIDTH = 50;
     const auto BIN_HEIGHT = 30;
     const auto BLOCK_WIDTH = 10;
     svg_begin(IMAGE_WIDTH, IMAGE_HEIGHT);
@@ -176,25 +190,13 @@ void show_histogram_svg( const vector<double>& bins,double val_sign)
             scaling_factor = 1;
         }
     }
-     double bin_size=val_sign;
-     string str; 
-     int i = 0;
+  
     for (size_t bin : bins)
-    {         
-       string str= to_string(val_sign);
-        str.erase(4,4);
+    {             
         const double bin_width = BLOCK_WIDTH * bin * scaling_factor;
-        svg_text(2*TEXT_LEFT, top + TEXT_BASELINE+ top_sign, to_string(bin));
-        svg_rect(TEXT_WIDTH, top+ top_sign, bin_width, BIN_HEIGHT, "blue", "#ffeeee");
-        if (i < bin_count - 1)
-        {
-            svg_text(0, top + TEXT_BASELINE + top_sign + BIN_HEIGHT, str);
-            i++;
-        }        
-        top += BIN_HEIGHT;  
-        top_sign += BIN_HEIGHT;
-        val_sign = val_sign + bin_size;
-       
+        svg_text(TEXT_LEFT, top + TEXT_BASELINE, to_string(bin));
+        svg_rect(TEXT_WIDTH, top, bin_width, BIN_HEIGHT, "blue", "#ffeeee");            
+        top += BIN_HEIGHT;     
     }
     svg_end();
 }
