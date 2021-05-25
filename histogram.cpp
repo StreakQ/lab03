@@ -35,14 +35,17 @@ vector<double> input_numbers(istream& in, size_t count)
 Input read_input(istream& in)
 {
     Input data;
-
-    cerr << "Enter number count: ";
     size_t number_count;
-    in >> number_count;
-    cerr << "Enter numbers: ";
+    
+    
+        cerr << "Enter number count: ";       
+        in >> number_count;
+        cerr << "Enter numbers: ";       
+        cerr << "Enter bin count ";
+        in >> data.bin_count;
+    
+    
     data.numbers = input_numbers(in, number_count);
-    cerr << "Enter bin count ";
-    in >> data.bin_count;
     
     return data;
 }
