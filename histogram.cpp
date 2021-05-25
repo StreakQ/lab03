@@ -31,11 +31,7 @@ vector<double> input_numbers(istream& in, size_t count)
     }
     return result;
 }
-struct Input
-{
-    vector<double> numbers;
-    size_t bin_count;
-};
+
 Input read_input(istream& in)
 {
     Input data;
@@ -43,31 +39,30 @@ Input read_input(istream& in)
     cerr << "Enter number count: ";
     size_t number_count;
     in >> number_count;
-
     cerr << "Enter numbers: ";
     data.numbers = input_numbers(in, number_count);
     cerr << "Enter bin count ";
     in >> data.bin_count;
-
-
+    
     return data;
 }
 
-vector<double> make_histogram(const vector<double>& numbers, size_t bin_count)
+vector<double> make_histogram(Input data)
 {
+    
     double min, max;
-    vector<double> bins(bin_count);
-    find_minmax(numbers, min, max);
-    size_t number_count = numbers.size();
-    double bin_size = (max - min) / bin_count;
+    vector<double> bins(data.bin_count);
+    find_minmax(data.numbers, min, max);
+    size_t number_count = data.numbers.size();
+    double bin_size = (max - min) / data.bin_count;
     for (size_t i = 0; i < number_count; i++)
     {
         bool flag = false;
-        for (size_t j = 0; (j < bin_count - 1) && !flag; j++)
+        for (size_t j = 0; (j < data.bin_count - 1) && !flag; j++)
         {
             auto lo = min + j * bin_size;
             auto hi = min + (j + 1) * bin_size;
-            if ((lo <= numbers[i]) && (hi > numbers[i]))
+            if ((lo <= data.numbers[i]) && (hi > data.numbers[i]))
             {
                 bins[j]++;
                 flag = true;
@@ -76,12 +71,13 @@ vector<double> make_histogram(const vector<double>& numbers, size_t bin_count)
         }
         if (!flag)
         {
-            bins[bin_count - 1]++;
+            bins[data.bin_count - 1]++;
         }
     }
 
     return bins;
 }
+
 void show_histogram_text(vector<size_t>bins)
 {
    size_t bin_count = bins.size();

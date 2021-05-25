@@ -8,11 +8,17 @@
 
 
 using namespace std;
-struct Input;
+
+struct Input
+{
+    vector<double> numbers;
+    size_t bin_count;
+};
 Input read_input(istream& in);
+
 void find_minmax(const vector<double>& numbers, double& min, double& max);
 vector<double> input_numbers(istream& in, size_t count);
-vector<double> make_histogram(const vector<double>& numbers, size_t bin_count);
+vector<double> make_histogram(Input data);
 void show_histogram_text(vector<double>bins);
 void svg_begin(double width, double height);
 void svg_end();
