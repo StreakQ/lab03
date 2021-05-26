@@ -1,4 +1,4 @@
-
+#include <curl/curl.h>
 #include "histogram.h"
 #include <iostream>
 #include <vector>
@@ -9,16 +9,10 @@ using namespace std;
 
 int main()
 {
-    size_t number_count;
-    cerr << "Enter number count: ";
-    cin >> number_count;
-    size_t bin_count;
-    cerr << "Enter bin count: ";
-    cin >> bin_count;
-    const auto numbers = input_numbers(number_count);
-    const auto bins = make_histogram(numbers, bin_count);
-    auto val_sign = fun_sign(numbers, bin_count);
-    show_histogram_svg(bins,val_sign);
-    return 1;
+    curl_global_init(CURL_GLOBAL_ALL);
+   const auto input = read_input(cin);
+   const auto bins = make_histogram(input);
+   show_histogram_svg(bins);
+   return 1;
 }
 

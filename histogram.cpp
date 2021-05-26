@@ -1,6 +1,8 @@
 
 #include "histogram.h"
 
+
+
 void find_minmax(const vector<double>& numbers, double& min, double& max)
 {
     min = numbers[0];
@@ -20,30 +22,50 @@ void find_minmax(const vector<double>& numbers, double& min, double& max)
 
     return;
 }
-vector<double> input_numbers(size_t count)
+vector<double> input_numbers(istream& in, size_t count)
 {
     vector<double> result(count);
     for (size_t i = 0; i < count; i++)
     {
-        cin >> result[i];
+        in >> result[i];
     }
     return result;
 }
-vector<double> make_histogram(const vector<double>& numbers, size_t bin_count)
+
+Input read_input(istream& in)
 {
+    Input data;
+    size_t number_count;
+
+
+        cerr << "Enter number count: ";
+        in >> number_count;
+        cerr << "Enter numbers: ";
+        cerr << "Enter bin count ";
+        in >> data.bin_count;
+
+
+    data.numbers = input_numbers(in, number_count);
+
+    return data;
+}
+
+vector<double> make_histogram(Input data)
+{
+
     double min, max;
-    vector<double> bins(bin_count);
-    find_minmax(numbers, min, max);
-    size_t number_count = numbers.size();
-    double bin_size = (max - min) / bin_count;
+    vector<double> bins(data.bin_count);
+    find_minmax(data.numbers, min, max);
+    size_t number_count = data.numbers.size();
+    double bin_size = (max - min) / data.bin_count;
     for (size_t i = 0; i < number_count; i++)
     {
         bool flag = false;
-        for (size_t j = 0; (j < bin_count - 1) && !flag; j++)
+        for (size_t j = 0; (j < data.bin_count - 1) && !flag; j++)
         {
             auto lo = min + j * bin_size;
             auto hi = min + (j + 1) * bin_size;
-            if ((lo <= numbers[i]) && (hi > numbers[i]))
+            if ((lo <= data.numbers[i]) && (hi > data.numbers[i]))
             {
                 bins[j]++;
                 flag = true;
@@ -52,12 +74,13 @@ vector<double> make_histogram(const vector<double>& numbers, size_t bin_count)
         }
         if (!flag)
         {
-            bins[bin_count - 1]++;
+            bins[data.bin_count - 1]++;
         }
     }
 
     return bins;
 }
+
 void show_histogram_text(vector<size_t>bins)
 {
    size_t bin_count = bins.size();
@@ -132,23 +155,13 @@ void svg_rect(double x, double y, double width, double height, string stroke , s
         << "' stroke='" << stroke << "' fill='" << fill << "'/>";
 }
 
-double fun_sign(const vector<double> numbers,size_t bin_count )
-{
-    double max, min;
-    find_minmax(numbers, min, max);
-    double bin_size = (max - min) / bin_count;
-    bin_size = round(bin_size * 100) / 100;
-    double val_sign=0;
-    val_sign = val_sign + bin_size;
-    return val_sign;
-}
-void show_histogram_svg( const vector<double>& bins,double val_sign)
+void show_histogram_svg( const vector<double>& bins)
 {
     const auto IMAGE_WIDTH = 400;
     const auto IMAGE_HEIGHT = 300;
     const auto TEXT_LEFT = 20;
     const auto TEXT_BASELINE = 20;
-    const auto TEXT_WIDTH = 70;
+    const auto TEXT_WIDTH = 50;
     const auto BIN_HEIGHT = 30;
     const auto BLOCK_WIDTH = 10;
     svg_begin(IMAGE_WIDTH, IMAGE_HEIGHT);
@@ -169,32 +182,20 @@ void show_histogram_svg( const vector<double>& bins,double val_sign)
     {
         if (max_count > MAX_WIDTH)
         {
-            scaling_factor =  (static_cast<double>(MAX_WIDTH) / max_count);
+            scaling_factor = (static_cast<double>(MAX_WIDTH) / max_count);
         }
         else
         {
             scaling_factor = 1;
         }
     }
-     double bin_size=val_sign;
-     string str;
-     int i = 0;
+
     for (size_t bin : bins)
     {
-       string str= to_string(val_sign);
-        str.erase(4,4);
         const double bin_width = BLOCK_WIDTH * bin * scaling_factor;
-        svg_text(2*TEXT_LEFT, top + TEXT_BASELINE+ top_sign, to_string(bin));
-        svg_rect(TEXT_WIDTH, top+ top_sign, bin_width, BIN_HEIGHT, "blue", "#ffeeee");
-        if (i < bin_count - 1)
-        {
-            svg_text(0, top + TEXT_BASELINE + top_sign + BIN_HEIGHT, str);
-            i++;
-        }
+        svg_text(TEXT_LEFT, top + TEXT_BASELINE, to_string(bin));
+        svg_rect(TEXT_WIDTH, top, bin_width, BIN_HEIGHT, "blue", "#ffeeee");
         top += BIN_HEIGHT;
-        top_sign += BIN_HEIGHT;
-        val_sign = val_sign + bin_size;
-
     }
     svg_end();
 }
