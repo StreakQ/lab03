@@ -15,19 +15,64 @@
 	<math.h>
 	<string>
 
-1619758668 source:c:\users\Евгений\source\repos\lab03-histogram\main.cpp
+1622004621 source:c:\users\Евгений\source\repos\lab03-histogram\main.cpp
+	<curl/curl.h>
 	"histogram.h"
 	<iostream>
 	<vector>
 	<math.h>
 	<string>
 
-1619758549 c:\users\Евгений\source\repos\lab03-histogram\histogram.h
+1622003866 c:\users\Евгений\source\repos\lab03-histogram\histogram.h
 	<vector>
 	<iostream>
 	<math.h>
 	<string>
+	<iomanip>
+	<fstream>
 
-1619701208 source:c:\users\Евгений\source\repos\lab03-histogram\histogram.cpp
+1622003987 source:c:\users\Евгений\source\repos\lab03-histogram\histogram.cpp
 	"histogram.h"
+
+1618204474 c:\users\Евгений\source\repos\lab03-histogram\curl\include\curl\curl.h
+	"curlver.h"
+	"system.h"
+	<stdio.h>
+	<limits.h>
+	<osreldate.h>
+	<sys/types.h>
+	<time.h>
+	<winsock2.h>
+	<ws2tcpip.h>
+	<sys/select.h>
+	<sys/socket.h>
+	<sys/time.h>
+	<support/SupportDefs.h>
+	"easy.h"
+	"multi.h"
+	"urlapi.h"
+	"options.h"
+	"typecheck-gcc.h"
+
+1618369046 c:\users\Евгений\source\repos\lab03-histogram\curl\include\curl\curlver.h
+
+1618201874 c:\users\Евгений\source\repos\lab03-histogram\curl\include\curl\system.h
+	<winsock2.h>
+	<windows.h>
+	<ws2tcpip.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<sys/poll.h>
+
+1618201874 c:\users\Евгений\source\repos\lab03-histogram\curl\include\curl\easy.h
+
+1618201874 c:\users\Евгений\source\repos\lab03-histogram\curl\include\curl\multi.h
+	"curl.h"
+
+1618201874 c:\users\Евгений\source\repos\lab03-histogram\curl\include\curl\urlapi.h
+	"curl.h"
+
+1618201874 c:\users\Евгений\source\repos\lab03-histogram\curl\include\curl\options.h
+
+1618203848 c:\users\Евгений\source\repos\lab03-histogram\curl\include\curl\typecheck-gcc.h
 

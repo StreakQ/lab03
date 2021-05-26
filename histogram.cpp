@@ -165,7 +165,7 @@ void show_histogram_svg( const vector<double>& bins)
     const auto BIN_HEIGHT = 30;
     const auto BLOCK_WIDTH = 10;
     svg_begin(IMAGE_WIDTH, IMAGE_HEIGHT);
-    double top = 0,top_sign=0;
+    double top = 0;
     double scaling_factor=0;
     size_t bin_count = bins.size();
     size_t max_count = 0,k;
