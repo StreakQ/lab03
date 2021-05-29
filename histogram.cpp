@@ -202,7 +202,7 @@ void svg_rect(double x, double y, double width, double height, string stroke, st
          << "' stroke='" << stroke << "' fill='" << fill << "'/>";
 }
 
-void show_histogram_svg( const vector<double>& bins,double bin_size)
+void show_histogram_svg( const vector<double>& bins,double bin_size,string option_value)
 {
     const auto IMAGE_WIDTH = 400;
     const auto IMAGE_HEIGHT = 300;
@@ -239,14 +239,14 @@ void show_histogram_svg( const vector<double>& bins,double bin_size)
 
     double val_sign =bin_size;
     string str;
-    int i = 0;
+    size_t i = 0;
     for (size_t bin : bins)
     {
         string str= to_string(val_sign);
         str.erase(4,4);
         const double bin_width = BLOCK_WIDTH * bin * scaling_factor;
         svg_text(2*TEXT_LEFT, top + TEXT_BASELINE+ top_sign, to_string(bin));
-        svg_rect(TEXT_WIDTH, top+ top_sign, bin_width, BIN_HEIGHT, "blue", "#ffeeee");
+        svg_rect(TEXT_WIDTH, top+ top_sign, bin_width, BIN_HEIGHT, "blue", option_value);
         if (i < bin_count - 1)
         {
             svg_text(0, top + TEXT_BASELINE + top_sign + BIN_HEIGHT, str);

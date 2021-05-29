@@ -24,7 +24,8 @@
 	<string>
 	<sstream>
 
-1622089374 c:\users\Евгений\source\repos\lab03-histogram\histogram.h
+1622275369 c:\users\Евгений\source\repos\lab03-histogram\histogram.h
+	<curl/curl.h>
 	<vector>
 	<iostream>
 	<math.h>
@@ -33,7 +34,7 @@
 	<iomanip>
 	<fstream>
 
-1622003987 source:c:\users\Евгений\source\repos\lab03-histogram\histogram.cpp
+1622275358 source:c:\users\Евгений\source\repos\lab03-histogram\histogram.cpp
 	"histogram.h"
 
 1618204474 c:\users\Евгений\source\repos\lab03-histogram\curl\include\curl\curl.h
