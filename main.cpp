@@ -22,7 +22,9 @@ main(int argc, char* argv[])
     }
 
     const auto bins = make_histogram(input);
-    show_histogram_svg(bins);
+    auto bin_size = fun_sign(input);
+    show_histogram_svg(bins,bin_size);
+
 
     return 1;
 }

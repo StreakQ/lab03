@@ -33,51 +33,61 @@ vector<double> input_numbers(istream& in, size_t count)
 }
 
 Input read_input(istream& in, bool prompt)
- {
-    Input data;
+{
 
-    if (prompt) cerr << "Enter number count: ";
+    Input data;
+    if (prompt)
+    {
+        cerr << "Enter number count: ";
+    }
     size_t number_count;
     in >> number_count;
 
-    if (prompt) cerr << "Enter numbers: ";
+    if(prompt)
+    {
+        cerr << "Enter numbers: ";
+    }
     data.numbers = input_numbers(in, number_count);
 
-    if (prompt) cerr << "Enter bin count: ";
-    in >> data.bin_count;
+    if(prompt)
+    {
+        cerr <<"Enter bin count:";
+    }
+    in>>data.bin_count;
 
     return data;
+
 }
 Input download(const string& address)
 {
     stringstream buffer;
- curl_global_init(CURL_GLOBAL_ALL);
+    curl_global_init(CURL_GLOBAL_ALL);
     CURL *curl = curl_easy_init();
 
-        if(curl)
+    if(curl)
+    {
+        CURLcode res;
+        curl_easy_setopt(curl, CURLOPT_URL, address.c_str());
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
+
+        res = curl_easy_perform(curl);
+        if(res)
         {
-            CURLcode res;
-             curl_easy_setopt(curl,CURLOPT_SSL_VERIFYPEER, false);
-            curl_easy_setopt(curl, CURLOPT_URL, address);
-            curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
-            res = curl_easy_perform(curl);
-            if(curl_easy_strerror(res) != 0)
-            {
-                cerr<< curl_easy_strerror(res);
-                exit(1);
-            }
-            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
-            curl_easy_cleanup(curl);
+            cerr<< curl_easy_strerror(res)<<"("<<res<<")"<<endl;
+            exit(1);
         }
+
+        curl_easy_cleanup(curl);
+    }
     return read_input(buffer,false);
 }
 size_t write_data(void* items, size_t item_size, size_t item_count, void* ctx)
 {
     size_t data_size = item_size * item_count;
     stringstream* buffer = reinterpret_cast<stringstream*>(ctx);
- auto item =reinterpret_cast<const char*>(items);
-     (*buffer).write(item, data_size);
-    return 0;
+    buffer->write(reinterpret_cast<const char*>(items), data_size);
+    return data_size;
 }
 vector<double> make_histogram(Input data)
 {
@@ -108,6 +118,14 @@ vector<double> make_histogram(Input data)
     }
 
     return bins;
+}
+double fun_sign(Input data)
+{
+    double min, max;
+    find_minmax(data.numbers, min, max);
+    double bin_size = (max - min) / data.bin_count;
+    bin_size = round(bin_size * 100)/100;
+    return bin_size;
 }
 
 void show_histogram_text(vector<size_t>bins)
@@ -184,7 +202,7 @@ void svg_rect(double x, double y, double width, double height, string stroke, st
          << "' stroke='" << stroke << "' fill='" << fill << "'/>";
 }
 
-void show_histogram_svg( const vector<double>& bins)
+void show_histogram_svg( const vector<double>& bins,double bin_size)
 {
     const auto IMAGE_WIDTH = 400;
     const auto IMAGE_HEIGHT = 300;
@@ -194,7 +212,7 @@ void show_histogram_svg( const vector<double>& bins)
     const auto BIN_HEIGHT = 30;
     const auto BLOCK_WIDTH = 10;
     svg_begin(IMAGE_WIDTH, IMAGE_HEIGHT);
-    double top = 0;
+    double top = 0,top_sign=0;
     double scaling_factor=0;
     size_t bin_count = bins.size();
     size_t max_count = 0,k;
@@ -219,12 +237,26 @@ void show_histogram_svg( const vector<double>& bins)
         }
     }
 
+    double val_sign =bin_size;
+    string str;
+    int i = 0;
     for (size_t bin : bins)
     {
+        string str= to_string(val_sign);
+        str.erase(4,4);
         const double bin_width = BLOCK_WIDTH * bin * scaling_factor;
-        svg_text(TEXT_LEFT, top + TEXT_BASELINE, to_string(bin));
-        svg_rect(TEXT_WIDTH, top, bin_width, BIN_HEIGHT, "blue", "#ffeeee");
+        svg_text(2*TEXT_LEFT, top + TEXT_BASELINE+ top_sign, to_string(bin));
+        svg_rect(TEXT_WIDTH, top+ top_sign, bin_width, BIN_HEIGHT, "blue", "#ffeeee");
+        if (i < bin_count - 1)
+        {
+            svg_text(0, top + TEXT_BASELINE + top_sign + BIN_HEIGHT, str);
+            i++;
+        }
         top += BIN_HEIGHT;
+        top_sign += BIN_HEIGHT;
+        val_sign = val_sign + bin_size;
+
     }
+
     svg_end();
 }
