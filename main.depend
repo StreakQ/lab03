@@ -15,19 +15,21 @@
 	<math.h>
 	<string>
 
-1622004621 source:c:\users\Евгений\source\repos\lab03-histogram\main.cpp
+1622089587 source:c:\users\Евгений\source\repos\lab03-histogram\main.cpp
 	<curl/curl.h>
 	"histogram.h"
 	<iostream>
 	<vector>
 	<math.h>
 	<string>
+	<sstream>
 
-1622003866 c:\users\Евгений\source\repos\lab03-histogram\histogram.h
+1622089374 c:\users\Евгений\source\repos\lab03-histogram\histogram.h
 	<vector>
 	<iostream>
 	<math.h>
 	<string>
+	<sstream>
 	<iomanip>
 	<fstream>
 

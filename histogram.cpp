@@ -32,24 +32,53 @@ vector<double> input_numbers(istream& in, size_t count)
     return result;
 }
 
-Input read_input(istream& in)
-{
+Input read_input(istream& in, bool prompt)
+ {
     Input data;
+
+    if (prompt) cerr << "Enter number count: ";
     size_t number_count;
+    in >> number_count;
 
-
-        cerr << "Enter number count: ";
-        in >> number_count;
-        cerr << "Enter numbers: ";
-        cerr << "Enter bin count ";
-        in >> data.bin_count;
-
-
+    if (prompt) cerr << "Enter numbers: ";
     data.numbers = input_numbers(in, number_count);
+
+    if (prompt) cerr << "Enter bin count: ";
+    in >> data.bin_count;
 
     return data;
 }
+Input download(const string& address)
+{
+    stringstream buffer;
+ curl_global_init(CURL_GLOBAL_ALL);
+    CURL *curl = curl_easy_init();
 
+        if(curl)
+        {
+            CURLcode res;
+             curl_easy_setopt(curl,CURLOPT_SSL_VERIFYPEER, false);
+            curl_easy_setopt(curl, CURLOPT_URL, address);
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
+            res = curl_easy_perform(curl);
+            if(curl_easy_strerror(res) != 0)
+            {
+                cerr<< curl_easy_strerror(res);
+                exit(1);
+            }
+            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
+            curl_easy_cleanup(curl);
+        }
+    return read_input(buffer,false);
+}
+size_t write_data(void* items, size_t item_size, size_t item_count, void* ctx)
+{
+    size_t data_size = item_size * item_count;
+    stringstream* buffer = reinterpret_cast<stringstream*>(ctx);
+ auto item =reinterpret_cast<const char*>(items);
+     (*buffer).write(item, data_size);
+    return 0;
+}
 vector<double> make_histogram(Input data)
 {
 
@@ -83,7 +112,7 @@ vector<double> make_histogram(Input data)
 
 void show_histogram_text(vector<size_t>bins)
 {
-   size_t bin_count = bins.size();
+    size_t bin_count = bins.size();
     size_t max_count = 0;
     for (size_t i = 0; i < bin_count; i++)
     {
@@ -149,10 +178,10 @@ svg_text(double left, double baseline, string text)
 
     cout << "<text x='" << left << "' y='" << baseline << "'>" << text << "</text>";
 }
-void svg_rect(double x, double y, double width, double height, string stroke , string fill )
+void svg_rect(double x, double y, double width, double height, string stroke, string fill )
 {
     cout << "<rect x='" << x << "' y='" << y << "' width='" << width << "' height='" << height
-        << "' stroke='" << stroke << "' fill='" << fill << "'/>";
+         << "' stroke='" << stroke << "' fill='" << fill << "'/>";
 }
 
 void show_histogram_svg( const vector<double>& bins)
